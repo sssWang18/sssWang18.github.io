@@ -1,0 +1,300 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta name=viewport content="width=device-width, initial-scale=1">
+  <!-- <meta name=viewport content="width=device-width">
+  <meta name=viewport content="width=900"> -->
+  <meta name="generator" content="HTML Tidy for Linux/x86 (vers 11 February 2007), see www.w3.org">
+  <link rel="stylesheet" type="text/css" href="stylesheet.css">
+  <link rel="icon" type="image/png" href="images/profile_cz.png">
+  <title>Zichen "Charles" Zhang. Personal Webpage</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+
+  <!-- Gif toggles -->
+  <script>
+  function gif_start(image, gif) {
+    document.getElementById(image).style.opacity = "1";
+    document.getElementById(gif).style.opacity = "0";
+  }
+  function gif_stop(image, gif) {
+    document.getElementById(image).style.opacity = "0";
+    document.getElementById(gif).style.opacity = "1";
+  }
+  </script>
+
+  <!-- Selected publications toggle -->
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="text/javascript">
+  function pubs_off_start() {
+    $('.hiddenPubs').hide();
+    var e = document.getElementById('sel_pub_button');
+    e.classList.add("toggled");
+    var e = document.getElementById('all_pub_button');
+    e.classList.remove("toggled");
+  }
+  function pubs_off() {
+    $('.hiddenPubs').slideUp();
+    var e = document.getElementById('sel_pub_button');
+    e.classList.add("toggled");
+    var e = document.getElementById('all_pub_button');
+    e.classList.remove("toggled");
+  }
+  function pubs_on() {
+    $('.hiddenPubs').slideDown();
+    var e = document.getElementById('all_pub_button');
+    e.classList.add("toggled");
+    var e = document.getElementById('sel_pub_button');
+    e.classList.remove("toggled");
+  };
+  </script>
+
+  <!-- Dynamic generation -->
+  <script src="https://unpkg.com/mustache@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+  <script type="text/javascript" src="data/js-yaml.min.js"></script>
+  <script type="text/javascript">
+  function renderHello() {
+    var template = document.getElementById('template').innerHTML;
+    $.get("./papers.yaml").done(function(data) {
+      try {
+      papers = jsyaml.load(data)
+      var rendered = Handlebars.compile(template)(papers);
+      document.getElementById('mustache_target').innerHTML = rendered;
+      pubs_off_start()
+      }
+      catch(err) {
+      }
+    });
+  }
+  </script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+  <!-- Dark mode -->
+  <script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.5/lib/darkmode-js.min.js"></script>
+  <script>
+  var options = {
+    autoMatchOsTheme: false // default: true
+  }
+
+  const darkmode = new Darkmode(options);
+  darkmode.showWidget();
+  </script>
+  <a name="top"></a>
+  <!-- body -->
+  <div style="max-width:900; width:100%; margin:0 auto">
+    <!-- <div style="max-width:900; width:100%; margin:0 auto">
+      <table width="100%" align="center" border="0" cellspacing="0" cellpadding="20">
+          <tr>
+          <p align="center">
+              <a href="#top">Home</a>&nbsp&nbsp/&nbsp 
+              <a href="#re">Research</a>&nbsp&nbsp/&nbsp 
+              <a href="#t">Teaching</a>&nbsp&nbsp/&nbsp 
+              <a href=/projects>Projects</a>&nbsp&nbsp/&nbsp 
+              <a href=/posts>Posts</a>
+              <a><strong>Personal (Comming Soon)</strong></a>
+          </p>
+          </tr>
+          <hr>
+      </table>
+    </div> -->
+      <!-- Intro & photo -->
+      <div class="table-like" style="width:100%; text-align=left;">
+        <div style="flex: 1 0 300px;margin-right:50px">
+          <p align="center">
+            <name>Zichen "Charles" Zhang</name> 
+          </p>
+          <p align="center" style="font-family:'Courier New">
+            charlesz at allenai dot org
+          </p>
+          <p>I am Predoctoral Young Investigators (PYI) on the <a href="http://prior.allenai.org/">PRIOR</a> team at <a href="https://allenai.org/">AI2</a> supervised by <a href="https://lucaweihs.github.io/">Luca Weihs</a>. I am also fortunate to collaborate with people from <a href="https://svl.stanford.edu/">Stanford Vision & Learning Lab (SVL)</a> and <a href="https://research.nvidia.com/research-area/machine-learning-artificial-intelligence)">NVIDIA</a>, supervised by <a href="https://scholar.google.com/citations?hl=en&user=sljtWIUAAAAJ">Jim Fan</a> and <a href="https://www.cs.utexas.edu/~yukez/">Yuke Zhu</a>. Previously, I graduated from <a href="https://www.macalester.edu/">Macalester College</a> in Dec. 2022 advised by Prof. <a href="https://mathbeveridge.github.io/">Andrew Beveridge</a> and <a href="https://www.macalester.edu/~fox/">Susan Fox</a>.</p>
+          
+          <p>My primary research interest lies in the development of autonomous agents that can effectively operate in dynamic environments, solving real-world puzzles for social good.  I am interested in both generalist and specialist agents, with a focus on developing generalizable and effective approaches that can be applied across a wide range of tasks and scenarios.</p>
+
+          <p>I will be applying for a Ph.D. program starting next fall.</p>
+
+          </p>
+          <p align=center>
+            <a href="files/CV.pdf">CV</a> &nbsp/&nbsp
+            <a href="https://github.com/zcczhang">GitHub</a> &nbsp/&nbsp
+            <a href="https://www.linkedin.com/in/charleszzz/">LinkedIn</a> &nbsp/&nbsp
+            <a href="https://twitter.com/ZCCZHANG/">Twitter</a> &nbsp/&nbsp
+            <a href="mailto:charlesz@allenai.org">Email</a> &nbsp/&nbsp
+            <a id="myImg">IM</a> 
+            <!-- The Modal -->
+            <div id="popup-img" class="modal">
+              <span class="close">x</span>
+              <img class="modal-content" id="img01">
+              <div id="caption"></div>
+            </div>
+          </p>
+        </div>
+
+        <div style="flex: 0 0 250px;">
+          <img src="images/profile_cz.png" style="width:100%">
+        </div>
+      </div>
+
+      <script>
+        // Get the modal
+        var modal = document.getElementById('popup-img');
+        
+        // Get the image and insert it inside the modal - use its "alt" text as a caption
+        var img = document.getElementById('myImg');
+        var modalImg = document.getElementById("img01");
+        var captionText = document.getElementById("caption");
+        img.onclick = function(){
+            modal.style.display = "block";
+            modalImg.src = "images/Wechat.jpeg";
+            // modalImg.alt = this.alt;
+            // captionText.innerHTML = this.alt;
+        }
+        
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+        
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() { 
+            modal.style.display = "none";
+        }
+      </script> 
+
+      <!-- News -->
+      <div style="width:100%; text-align=left;">
+        <heading>News</heading>
+      </div>
+
+      <div style="width:100%; text-align=left;margin-top:10; ">
+        <li> <b> 04/2023:</b> Release <a href="https://arxiv.org/pdf/2303.17600.pdf">When Learning Is Out of Reach, Reset: Generalization in Autonomous Visuomotor Reinforcement Learning</a>, towards only request intervention (reset) when necessary</li>
+        <li> <b> 12/2022:</b> Join <a href="https://prior.allenai.org/">PRIOR @ AI2</a> as Predoctoral Young Investigator (PYI)</li>
+        <li> <b> 10/2022:</b> Release <a href="https://vimalabs.github.io/"> VIMA</a>, a single agent can solve visual goal, one-shot video imitation, novel concept grounding, visual constraint, etc. </li>
+<!--        <li> <b> 05/2022: </b> Join the research with people from <a href="https://svl.stanford.edu/">SVL</a> and <a href="https://research.nvidia.com/research-area/machine-learning-artificial-intelligence)">Nvidia</a>, supervised by <a href="https://scholar.google.com/citations?hl=en&user=sljtWIUAAAAJ">Jim Fan</a> (<a href="https://research.nvidia.com/research-area/machine-learning-artificial-intelligence)">Nvidia</a>) and <a href="https://www.cs.utexas.edu/~yukez/">Yuke Zhu</a> (<a href="https://rpl.cs.utexas.edu/">UT-Austin</a> and <a href="https://research.nvidia.com/research-area/machine-learning-artificial-intelligence)">Nvidia</a>).</li>-->
+<!--        <li> <b> 02/2021:</b> join the intern mentored by <a href="https://lucaweihs.github.io/">Luca Weihs</a> on the <a href="https://prior.allenai.org/">PRIOR</a> team at <a href="https://allenai.org/">AI2</a>.</li>-->
+<!--        <li> <b> 03/2022:</b> One paper was accepted by 18th <a href="https://www.ecdp2022.org/">ECDP</a>, 2022</li>-->
+<!--        <li> <b> 11/2021:</b> One math paper was accepted by AMS contributed paper session and AMS-PME poster session<a href="https://www.jointmathematicsmeetings.org//jmm">, JMM 2022</a></li>-->
+<!--        <li> <b> 08/2021:</b> <a href="https://allenact.org/projects/gym_baselines/">Baseline models</a> and <a href="https://allenact.org/tutorials/gym-mujoco-tutorial/">Tutorials</a> in the learning framework <a href="https://allenact.org/">AllenAct</a> for <a href="https://gym.openai.com/envs/#mujoco">Gym MuJoCo</a> are released! </li>-->
+<!--        <li> <b> 08/2021:</b> Start collaboration mentored by <a href="https://lucaweihs.github.io/">Luca Weihs</a> on the <a href="https://prior.allenai.org/">PRIOR</a> team within <a href="https://allenai.org/">AI2</a>.</li>-->
+<!--        <li> <b> 03/2021:</b> The automated HER2 Scoring system has applied for the national invention patent (China) and planned to deplopy in <a href="https://www.301hospital.com.cn/index.html">People's Liberation Army General Hospital</a>.</li>-->
+<!--        <li> <b> 01/2021:</b> Join <a href="http://thorough.ai//">Thorough Images</a> mentored by <a href="https://scholar.google.com/citations?user=X3u_rXYAAAAJ&hl=en">Shuhao Wang</a> as a research intern</li>-->
+      </ul>
+    </div>
+    <a name="re"></a>
+    <div style="width:100%; text-align=left; margin-top:20; ">
+      <heading>Research</heading>
+      <a style="font-size: 17px; color: black;">(</a><a style="font-size:17px" id='sel_pub_button' href="javascript:pubs_off()">Highlighted</a> <a style="font-size: 17px; color: black;">/</a>
+      <a style="font-size:17px" id='all_pub_button' href="javascript:pubs_on()">All</a><a style="font-size: 17px; color: black;">)</a>
+      <br>
+      (* indicates equal contribution, <sup><span>&#8224;</span></sup>  indicates equal advising)
+    </div>
+
+    <div id="mustache_target">Loading...</div>
+    <script id="template" type="text/x-handlebars-template">
+      {{#papers}}
+      <div style="width:100%;margin-left:0px;margin-right:0px;margin-top:10px; flex-wrap:wrap-reverse; " class="table-like {{#unless highlighted}}hiddenPubs{{/unless}}" onmouseout="gif_stop('{{name}}_image', '{{name}}_gif')" onmouseover="gif_start('{{name}}_image', '{{name}}_gif')">
+        <div class="zero" style="flex: 1 0 270px;margin-top:0px;margin-right:20px;max-width:270px;">
+          <div class="one">
+            {{#unless nogif}}
+            <div class="two" id='{{name}}_image'>
+              <img src='images/{{name}}_after.gif' class="paper_img">
+            </div>
+            {{/unless}}
+            {{#if img2}}
+              <div class="two" id='{{name}}_image'>
+                <img src='images/{{name}}_after.png' class="paper_img">
+              </div>
+            {{/if}}
+            <img id='{{name}}_gif' src='images/{{name}}_before.png' class="paper_img">
+          </div>
+            <!-- {{#unless nogif}}
+            <p style="text-align: center;margin-top:0.4em;margin-bottom:0em;color:Gray;"><i> Hover/tap to play the gif</i></p>
+            {{/unless}} -->
+        </div>
+        <div style="flex: 10000 1 400px;margin-bottom:10px;" valign="top">
+          <p class="paper_title" style="margin-top:0em;">{{#if title.link}}<a href={{title.link}}>{{else}}<a>{{/if}}<papertitle>{{title.name}}</papertitle></a>
+          <br>
+          {{#authors}}
+          {{#if me}}
+            <strong><u>Zichen Zhang</u></strong>{{#if star}}*{{/if}}{{#unless @last}}, {{/unless}}
+          {{else}}
+            {{#if href}}
+              <a class="black_link" href={{href}}>{{name}}</a>{{#if star}}*{{/if}}{{#if star2}}<sup>&#8224;</sup> {{/if}}{{#unless @last}}, {{/unless}}
+            {{else}}
+            <a class="black_link">{{name}}</a>{{#if star}}*{{/if}}{{#if star2}}<sup>&#8224;</sup>{{/if}}{{#unless @last}}, {{/unless}}
+            {{/if}}
+          {{/if}}
+          {{/authors}}
+          <br>
+          <font color="Gray"><i>{{{conference.name}}}</i>, {{{conference.year}}}</font>
+          <br>
+          {{#links}}
+          {{#if href}}
+            <a href={{href}}>{{name}}</a>{{#unless @last}} | {{/unless}}
+          {{else}}
+            <a class="black_link">{{name}}</a>{{#unless @last}} | {{/unless}}
+          {{/if}}
+          {{/links}}
+          </p>
+          <p style="margin-bottom:0em;">{{description}}</p>
+        </div>
+      </div>
+      {{/papers}}
+    </script>
+    <script type="text/javascript">
+    renderHello()
+    </script>
+
+    <!-- This <i> tag was for some reason necessary for the publication list switch to work -->
+    <!-- <i> -->
+
+    <!-- Teaching -->
+    <a name="t"></a>
+    <div style="width:100%; text-align=left; margin-top:20;">
+    <heading>Teaching</heading> <br>
+    </div>
+    <div style="width:100%; text-align=left; margin-top:10;"> 
+      <strong>Teaching Assistant at Macalester College</strong>
+      <li> <b>09/2022:</b> Comp 484 Intro to Artificial Intelligence</li>
+      <li> <b>01/2022:</b> MATH 378 Complex Analysis</li>
+      <li> <b>09/2021:</b> STAT/COMP 112 Intro to Data Science</li>
+      <li> <b>01/2021:</b> COMP 394 Topics Course: Reinforcement Learning <br> <i>(design and write code implementations for homework and class materials)</i></li>
+      <li> <b>09/2020:</b> COMP 128 Data Structure</li>
+      <li> <b>01/2020:</b> STAT/COMP 112 Intro to Data Science</li>
+    </div>
+
+    <div style="width:100%; text-align=left; margin-top:20; display:none">
+      <heading>Others </heading>
+    </div>
+    <div style="max-width:900; width:100%; margin:0 auto; display:none">
+      <table width="100%" align="center" border="0" cellspacing="0" cellpadding="20">
+          <tr>
+          <p align="center">
+              <a href="#top"><strong>Home</strong></a>&nbsp&nbsp/&nbsp 
+              <!-- <a href=/projects><strong>Projects</strong></a>&nbsp&nbsp/&nbsp  -->
+              <a href=/posts><strong>Posts</strong></a>
+              <!-- <a><strong>Personal (Comming Soon)</strong></a> -->
+          </p>
+          </tr>
+      </table>
+    </div>
+
+  <span style="display:none">
+    <details>
+      <summary>
+      Pageviews
+      </summary>
+      <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?cl=5ee2ff&w=400&t=tt&d=5De8UX9TDFsVQrQw4cE3CBhNblYyl2vQbk42qsTB9Fw&co=ffffff&cmo=d99cff&cmn=ffa3b9&ct=808080"></script>
+    </details>
+  </span>
+
+    <br>
+    <hr>
+    <div style="margin:auto">
+        <center>
+        Inspired by <a href="https://jonbarron.info/">this</strong></a> and <a href="https://www.seas.upenn.edu/~oleh/">this</strong></a>.
+        </center>
+    </div>
+  </div>
+</body>
+</html>
