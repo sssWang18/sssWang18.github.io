@@ -1,21 +1,21 @@
 ---
 permalink: /
-title: "Hi, this is Charles!"
+title: "Hi, this is Alan!"
 excerpt: "About me"
 author_profile: true
 redirect_from: 
   - /about/
   - /about.html
 ---
-Hi, this is Charles (张子晨)! I am a third-year student majoring mathematics and computer science at [Macalester College](https://www.macalester.edu/) advised by Prof. [Andrew Beveridge](https://mathbeveridge.github.io/), and Prof. [Susan Fox](https://www.macalester.edu/~fox/). Recently, I am researching adversarial reset-free reinforcement learning with sink states mentored by [Luca Weihs](https://lucaweihs.github.io/) from [Allen Institute for AI (AI2)](https://allenai.org/). 
+Hi, this is Alan (王圣元)! I am a Junior student majoring mathematics and computer science at [Macalester College](https://www.macalester.edu/) advised by Prof. [Andrew Beveridge](https://mathbeveridge.github.io/), and Prof. [Susan Fox](https://www.macalester.edu/~fox/). Recently, I am researching Medical Image Segementation and Health NLP.
 
-[[Curriculum Vitae]](https://zcczhang.github.io/files/CV.pdf)
+[[Curriculum Vitae]](https://sssWang18.github.io/files/CV.pdf)
 
 My primary research interest lies in designing, developing, optimizing, and deploying *SAFE* deep reinforcement learning algorithms as well as their underlying mathematical principles to build autonomous (embodied, multi) agents that can perform in dynamic environments, solving real-world puzzles for common good. 
 
-I also love competing in mathematical competitions to unveil the elegant beauty of the mathematics. In my spare time, I love to see the aurora driving four hours away from my school, and I indulge in Chinese calligraphy, playing basketball, golf, ping-pong, soccer, going fishing, e.t.c.. 
+I also love competing in various competitions about mathematics modeling, programming design and cyber safety to unveil the elegant beauty of the mathematics and computer sciecne. In my spare time, I love to see the great lakes driving four hours away from my school, and I indulge in Chinese calligraphy, playing basketball, hiking, pools, soccer, going fishing, e.t.c.. 
 
-To know more about me, you could see my [Publications(scripts)](https://zcczhang.github.io/publications/), [Projects](https://zcczhang.github.io/projects/), [Experience](https://zcczhang.github.io/experience/), and [Honors](https://zcczhang.github.io/honors/). I am also making some notes, especially based on detailed mathematical proofs and my understanding, while lerning and researching about reinforcement learning in [Blogs](https://zcczhang.github.io/blogs/).
+To know more about me, you could see my [Publications(scripts)](https://sssWang18.github.io/publications/), [Projects](https://sssWang18.github.io/projects/), [Experience](https://sssWang18.github.io/experience/), and [Honors](https://sssWang18.github.io/honors/). <!-- I am also making some notes, especially based on detailed mathematical proofs and my understanding, while lerning and researching about reinforcement learning in [Blogs](https://sssWang18.github.io/blogs/). -->
 
 <!-- 
 <details>

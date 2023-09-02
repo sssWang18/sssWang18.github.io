@@ -1,0 +1,2087 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+
+<meta charset="utf-8">
+
+
+
+<!-- begin SEO -->
+
+
+
+
+
+
+
+
+
+<title>House Price Prediction - Charles Zhang</title>
+
+
+
+
+
+
+
+<meta property="og:locale" content="en-US">
+<meta property="og:site_name" content="Charles Zhang">
+<meta property="og:title" content="House Price Prediction">
+
+
+  <link rel="canonical" href="http://localhost:4000/projects/house_pice_prediction">
+  <meta property="og:url" content="http://localhost:4000/projects/house_pice_prediction">
+
+
+
+  <meta property="og:description" content="This is the first practice for machine learning and for Kaggle competition: House Prices: Advanced Regression Techniques. Using Ridge, Lasso, LGBM, XGB, Stacking CV Regressor, and etc, to reach Score(mean absolute error): 11977.59807; 13th place out of 19,465 teams (0.06%) For more information, please see my project directly or visit my Github Repository.">
+
+
+
+
+
+  
+
+  
+
+
+
+
+
+  <meta property="og:type" content="article">
+  <meta property="article:published_time" content="2020-01-19T00:00:00-06:00">
+
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context" : "http://schema.org",
+      "@type" : "Person",
+      "name" : "Charles Zhang",
+      "url" : "http://localhost:4000",
+      "sameAs" : null
+    }
+  </script>
+
+
+
+
+
+
+<!-- end SEO -->
+
+
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="Charles Zhang Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.css">
+
+<meta http-equiv="cleartype" content="on">
+    
+
+<!-- start custom head snippets -->
+
+<link rel="apple-touch-icon" sizes="57x57" href="http://localhost:4000/images/apple-touch-icon-57x57.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="60x60" href="http://localhost:4000/images/apple-touch-icon-60x60.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="76x76" href="http://localhost:4000/images/apple-touch-icon-76x76.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="120x120" href="http://localhost:4000/images/apple-touch-icon-120x120.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="152x152" href="http://localhost:4000/images/apple-touch-icon-152x152.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:4000/images/apple-touch-icon-180x180.png?v=M44lzPylqQ">
+<link rel="icon" type="image/png" href="http://localhost:4000/images/favicon-32x32.png?v=M44lzPylqQ" sizes="32x32">
+<link rel="icon" type="image/png" href="http://localhost:4000/images/android-chrome-192x192.png?v=M44lzPylqQ" sizes="192x192">
+<link rel="icon" type="image/png" href="http://localhost:4000/images/favicon-96x96.png?v=M44lzPylqQ" sizes="96x96">
+<link rel="icon" type="image/png" href="http://localhost:4000/images/favicon-16x16.png?v=M44lzPylqQ" sizes="16x16">
+<link rel="manifest" href="http://localhost:4000/images/manifest.json?v=M44lzPylqQ">
+<link rel="mask-icon" href="http://localhost:4000/images/safari-pinned-tab.svg?v=M44lzPylqQ" color="#000000">
+<link rel="shortcut icon" href="/images/favicon.ico?v=M44lzPylqQ">
+<meta name="msapplication-TileColor" content="#000000">
+<meta name="msapplication-TileImage" content="http://localhost:4000/images/mstile-144x144.png?v=M44lzPylqQ">
+<meta name="msapplication-config" content="http://localhost:4000/images/browserconfig.xml?v=M44lzPylqQ">
+<meta name="theme-color" content="#ffffff">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/academicons.css"/>
+
+<script type="text/x-mathjax-config"> MathJax.Hub.Config({ TeX: { equationNumbers: { autoNumber: "all" } } }); </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <button><div class="navicon"></div></button>
+        <ul class="visible-links">
+          <li class="masthead__menu-item masthead__menu-item--lg"><a href="http://localhost:4000/">Charles Zhang</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/">Research</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/projects/">Projects</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/posts/">Posts</a></li>
+          
+        </ul>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+    
+
+
+
+
+
+<div id="main" role="main">
+  
+
+
+  <div class="sidebar sticky">
+  
+
+
+
+<div itemscope itemtype="http://schema.org/Person">
+
+  <div class="author__avatar">
+    
+    	<img src="http://localhost:4000/images/profile.png" class="author__avatar" alt="">
+    
+  </div>
+
+  <div class="author__content">
+    <h3 class="author__name"></h3>
+    <p class="author__bio"><font size=3.5><strong>Zichen "Charles" Zhang</strong></font><br><br>An Art and Sports Aficionado who is unveiling the beauty of Mathematics and Computer Science behind the Artificial Intelligence</p>
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li><i class="fa fa-fw fa-map-marker" aria-hidden="true"></i> St. Paul, MN</li>
+      
+      
+      
+      
+        <li> <a href="/files/CV.pdf"> <i class="fas fa-fw fa-file-pdf" aria-hidden="true"></i> CV</a></li>
+      
+      
+        <li><a href="mailto:zzhang4@macalester.edu "><i class="fas fa-fw fa-envelope" aria-hidden="true"></i> Email</a></li>
+      
+      
+       
+      
+      
+      
+      
+        <li><a href="https://www.linkedin.com/in/charleszzz"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> LinkedIn</a></li>
+      
+      
+      
+        <li><a href="https://instagram.com/charleszhang_________"><i class="fab fa-fw fa-instagram" aria-hidden="true"></i> Instagram</a></li>
+      
+      
+      
+      
+        <li><a href="https://github.com/zcczhang"><i class="fab fa-fw fa-github" aria-hidden="true"></i> Github</a></li>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+      
+        <li><a href="/images/Wechat.jpeg"><i class="fa fa-fw fa-link" aria-hidden="true"></i> IM</a></li>
+      
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
+    <meta itemprop="headline" content="House Price Prediction">
+    <meta itemprop="description" content="This is the first practice for machine learning and for Kaggle competition: House Prices: Advanced Regression Techniques. Using Ridge, Lasso, LGBM, XGB, Stacking CV Regressor, and etc, to reach Score(mean absolute error): 11977.59807; 13th place out of 19,465 teams (0.06%) For more information, please see my project directly or visit my Github Repository.">
+    <meta itemprop="datePublished" content="January 19, 2020">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 class="page__title" itemprop="headline">House Price Prediction
+</h1>
+          <p><strong></strong></p>
+        </header>
+             
+        
+    
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        <p>This is the first practice for machine learning and for <strong>Kaggle competition</strong>: <a href="https://www.kaggle.com/c/house-prices-advanced-regression-techniques">House Prices: Advanced Regression Techniques</a>. Using Ridge, Lasso, LGBM, XGB, Stacking CV Regressor, and etc, to reach Score(mean absolute error): 11977.59807; <strong><em>13<sup>th</sup> place</em></strong> out of 19,465 teams <strong><em>(0.06%)</em></strong> For more information, please see my project directly or visit my <a href="https://github.com/zcczhang/House_Price_Prediction_Model">Github Repository</a>.</p>
+
+<p><br /></p>
+
+<p><img src="https://raw.githubusercontent.com/zcczhang/House_Price_Prediction_Model/master/output/rank.png" alt="" /></p>
+
+<p><br /></p>
+
+<p><a href="">version 1:</a> 
+Simple Prediction(with ridge regression, random forest, bagging, XGBoost) <a href="https://zcczhang.github.io/files/House_Price_Prediction_v1.pdf">View PDF</a></p>
+
+<p><a href="https://github.com/zcczhang/House_Price_Prediction_Model/blob/master/house_price_prediction_v2.ipynb">version 2:</a> Score(root mean squared logarithmic error): 0.10643; <strong><em>Rank: top 2%</em></strong>. score: 0.10643;</p>
+
+<p>version3: Score(mean absolute error): 11977.59807; <strong><em>Rank: 13 out of 19,465 teams(0.06%)</em></strong></p>
+
+<h1 id="house-price-prediction--version-2"><strong>House Price Prediction — version 2</strong></h1>
+<p><strong><em>Charles Zhang</em></strong>       <strong>Jan 19 2020</strong></p>
+
+<h1 id="introduction">Introduction</h1>
+<p><img src="https://i.ytimg.com/vi/LvfbopVq-WE/maxresdefault.jpg" alt="" /></p>
+
+<h4 id="this-is-my-second-version-house-price-prediction-model-for-the-kaggle-competition-in-this-version-i-improve-methods-for-processing-missing-value-more-accurately-use-ridge-lasso-lgbm-xgb-and-stacking-cv-regressor-to-build-machie-learning-models-and-add-blended-models-since-some-contents-are-repeated-i-will-just-breifly-describe-the-dataset-at-the-beginning">This is my second version <strong><em>House Price Prediction</em></strong> Model for the Kaggle Competition. In this version, I improve methods for processing missing value more accurately, use Ridge, Lasso, LGBM, XGB, and Stacking CV Regressor to build machie learning models, and add blended models. Since some contents are repeated, I will just breifly describe the dataset at the beginning.</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># This Python 3 environment comes with many helpful analytics libraries installed
+# It is defined by the kaggle/python docker image: https://github.com/kaggle/docker-python
+# For example, here's several helpful packages to load in 
+</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span> <span class="c1"># linear algebra
+</span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span> <span class="c1"># data processing, CSV file I/O (e.g. pd.read_csv)
+</span>
+<span class="c1"># Input data files are available in the "../input/" directory.
+# For example, running this (by clicking run or pressing Shift+Enter) will list the files in the input directory
+</span><span class="kn">import</span> <span class="nn">matplotlib.gridspec</span> <span class="k">as</span> <span class="n">gridspec</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">skew</span>  <span class="c1"># for some statistics
+</span><span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">boxcox1p</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">boxcox_normmax</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">ElasticNetCV</span><span class="p">,</span> <span class="n">LassoCV</span><span class="p">,</span> <span class="n">RidgeCV</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">GradientBoostingRegressor</span>
+<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVR</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">make_pipeline</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">RobustScaler</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">KFold</span><span class="p">,</span> <span class="n">cross_val_score</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_squared_error</span>
+<span class="kn">from</span> <span class="nn">mlxtend.regressor</span> <span class="kn">import</span> <span class="n">StackingCVRegressor</span>
+<span class="kn">from</span> <span class="nn">xgboost</span> <span class="kn">import</span> <span class="n">XGBRegressor</span>
+<span class="kn">from</span> <span class="nn">lightgbm</span> <span class="kn">import</span> <span class="n">LGBMRegressor</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="n">stats</span>
+<span class="kn">import</span> <span class="nn">sklearn.linear_model</span> <span class="k">as</span> <span class="n">linear_model</span>
+<span class="kn">import</span> <span class="nn">matplotlib.style</span> <span class="k">as</span> <span class="n">style</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="n">sns</span>
+<span class="kn">from</span> <span class="nn">sklearn.manifold</span> <span class="kn">import</span> <span class="n">TSNE</span>
+<span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">KMeans</span>
+<span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+
+
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="p">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s">'ignore'</span><span class="p">)</span>
+
+<span class="c1"># Any results you write to the current directory are saved as output.
+</span></code></pre></div></div>
+
+<h1 id="a-glimpse-of-the-datasets">A Glimpse of the datasets.</h1>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">train</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">"../input/house-prices-advanced-regression-techniques/train.csv"</span><span class="p">)</span>
+<span class="n">test</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">"../input/house-prices-advanced-regression-techniques/test.csv"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># gives us statistical info about the numerical variables. 
+</span><span class="n">train</span><span class="p">.</span><span class="n">describe</span><span class="p">().</span><span class="n">T</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>count</th>
+      <th>mean</th>
+      <th>std</th>
+      <th>min</th>
+      <th>25%</th>
+      <th>50%</th>
+      <th>75%</th>
+      <th>max</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Id</td>
+      <td>1460.0</td>
+      <td>730.500000</td>
+      <td>421.610009</td>
+      <td>1.0</td>
+      <td>365.75</td>
+      <td>730.5</td>
+      <td>1095.25</td>
+      <td>1460.0</td>
+    </tr>
+    <tr>
+      <td>MSSubClass</td>
+      <td>1460.0</td>
+      <td>56.897260</td>
+      <td>42.300571</td>
+      <td>20.0</td>
+      <td>20.00</td>
+      <td>50.0</td>
+      <td>70.00</td>
+      <td>190.0</td>
+    </tr>
+    <tr>
+      <td>LotFrontage</td>
+      <td>1201.0</td>
+      <td>70.049958</td>
+      <td>24.284752</td>
+      <td>21.0</td>
+      <td>59.00</td>
+      <td>69.0</td>
+      <td>80.00</td>
+      <td>313.0</td>
+    </tr>
+    <tr>
+      <td>LotArea</td>
+      <td>1460.0</td>
+      <td>10516.828082</td>
+      <td>9981.264932</td>
+      <td>1300.0</td>
+      <td>7553.50</td>
+      <td>9478.5</td>
+      <td>11601.50</td>
+      <td>215245.0</td>
+    </tr>
+    <tr>
+      <td>OverallQual</td>
+      <td>1460.0</td>
+      <td>6.099315</td>
+      <td>1.382997</td>
+      <td>1.0</td>
+      <td>5.00</td>
+      <td>6.0</td>
+      <td>7.00</td>
+      <td>10.0</td>
+    </tr>
+    <tr>
+      <td>OverallCond</td>
+      <td>1460.0</td>
+      <td>5.575342</td>
+      <td>1.112799</td>
+      <td>1.0</td>
+      <td>5.00</td>
+      <td>5.0</td>
+      <td>6.00</td>
+      <td>9.0</td>
+    </tr>
+    <tr>
+      <td>YearBuilt</td>
+      <td>1460.0</td>
+      <td>1971.267808</td>
+      <td>30.202904</td>
+      <td>1872.0</td>
+      <td>1954.00</td>
+      <td>1973.0</td>
+      <td>2000.00</td>
+      <td>2010.0</td>
+    </tr>
+    <tr>
+      <td>YearRemodAdd</td>
+      <td>1460.0</td>
+      <td>1984.865753</td>
+      <td>20.645407</td>
+      <td>1950.0</td>
+      <td>1967.00</td>
+      <td>1994.0</td>
+      <td>2004.00</td>
+      <td>2010.0</td>
+    </tr>
+    <tr>
+      <td>MasVnrArea</td>
+      <td>1452.0</td>
+      <td>103.685262</td>
+      <td>181.066207</td>
+      <td>0.0</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>166.00</td>
+      <td>1600.0</td>
+    </tr>
+    <tr>
+      <td>BsmtFinSF1</td>
+      <td>1460.0</td>
+      <td>443.639726</td>
+      <td>456.098091</td>
+      <td>0.0</td>
+      <td>0.00</td>
+      <td>383.5</td>
+      <td>712.25</td>
+      <td>5644.0</td>
+    </tr>
+    <tr>
+      <td>BsmtFinSF2</td>
+      <td>1460.0</td>
+      <td>46.549315</td>
+      <td>161.319273</td>
+      <td>0.0</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0.00</td>
+      <td>1474.0</td>
+    </tr>
+    <tr>
+      <td>BsmtUnfSF</td>
+      <td>1460.0</td>
+      <td>567.240411</td>
+      <td>441.866955</td>
+      <td>0.0</td>
+      <td>223.00</td>
+      <td>477.5</td>
+      <td>808.00</td>
+      <td>2336.0</td>
+    </tr>
+    <tr>
+      <td>TotalBsmtSF</td>
+      <td>1460.0</td>
+      <td>1057.429452</td>
+      <td>438.705324</td>
+      <td>0.0</td>
+      <td>795.75</td>
+      <td>991.5</td>
+      <td>1298.25</td>
+      <td>6110.0</td>
+    </tr>
+    <tr>
+      <td>1stFlrSF</td>
+      <td>1460.0</td>
+      <td>1162.626712</td>
+      <td>386.587738</td>
+      <td>334.0</td>
+      <td>882.00</td>
+      <td>1087.0</td>
+      <td>1391.25</td>
+      <td>4692.0</td>
+    </tr>
+    <tr>
+      <td>2ndFlrSF</td>
+      <td>1460.0</td>
+      <td>346.992466</td>
+      <td>436.528436</td>
+      <td>0.0</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>728.00</td>
+      <td>2065.0</td>
+    </tr>
+    <tr>
+      <td>LowQualFinSF</td>
+      <td>1460.0</td>
+      <td>5.844521</td>
+      <td>48.623081</td>
+      <td>0.0</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0.00</td>
+      <td>572.0</td>
+    </tr>
+    <tr>
+      <td>GrLivArea</td>
+      <td>1460.0</td>
+      <td>1515.463699</td>
+      <td>525.480383</td>
+      <td>334.0</td>
+      <td>1129.50</td>
+      <td>1464.0</td>
+      <td>1776.75</td>
+      <td>5642.0</td>
+    </tr>
+    <tr>
+      <td>BsmtFullBath</td>
+      <td>1460.0</td>
+      <td>0.425342</td>
+      <td>0.518911</td>
+      <td>0.0</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>1.00</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <td>BsmtHalfBath</td>
+      <td>1460.0</td>
+      <td>0.057534</td>
+      <td>0.238753</td>
+      <td>0.0</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0.00</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <td>FullBath</td>
+      <td>1460.0</td>
+      <td>1.565068</td>
+      <td>0.550916</td>
+      <td>0.0</td>
+      <td>1.00</td>
+      <td>2.0</td>
+      <td>2.00</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <td>HalfBath</td>
+      <td>1460.0</td>
+      <td>0.382877</td>
+      <td>0.502885</td>
+      <td>0.0</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>1.00</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <td>BedroomAbvGr</td>
+      <td>1460.0</td>
+      <td>2.866438</td>
+      <td>0.815778</td>
+      <td>0.0</td>
+      <td>2.00</td>
+      <td>3.0</td>
+      <td>3.00</td>
+      <td>8.0</td>
+    </tr>
+    <tr>
+      <td>KitchenAbvGr</td>
+      <td>1460.0</td>
+      <td>1.046575</td>
+      <td>0.220338</td>
+      <td>0.0</td>
+      <td>1.00</td>
+      <td>1.0</td>
+      <td>1.00</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <td>TotRmsAbvGrd</td>
+      <td>1460.0</td>
+      <td>6.517808</td>
+      <td>1.625393</td>
+      <td>2.0</td>
+      <td>5.00</td>
+      <td>6.0</td>
+      <td>7.00</td>
+      <td>14.0</td>
+    </tr>
+    <tr>
+      <td>Fireplaces</td>
+      <td>1460.0</td>
+      <td>0.613014</td>
+      <td>0.644666</td>
+      <td>0.0</td>
+      <td>0.00</td>
+      <td>1.0</td>
+      <td>1.00</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <td>GarageYrBlt</td>
+      <td>1379.0</td>
+      <td>1978.506164</td>
+      <td>24.689725</td>
+      <td>1900.0</td>
+      <td>1961.00</td>
+      <td>1980.0</td>
+      <td>2002.00</td>
+      <td>2010.0</td>
+    </tr>
+    <tr>
+      <td>GarageCars</td>
+      <td>1460.0</td>
+      <td>1.767123</td>
+      <td>0.747315</td>
+      <td>0.0</td>
+      <td>1.00</td>
+      <td>2.0</td>
+      <td>2.00</td>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <td>GarageArea</td>
+      <td>1460.0</td>
+      <td>472.980137</td>
+      <td>213.804841</td>
+      <td>0.0</td>
+      <td>334.50</td>
+      <td>480.0</td>
+      <td>576.00</td>
+      <td>1418.0</td>
+    </tr>
+    <tr>
+      <td>WoodDeckSF</td>
+      <td>1460.0</td>
+      <td>94.244521</td>
+      <td>125.338794</td>
+      <td>0.0</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>168.00</td>
+      <td>857.0</td>
+    </tr>
+    <tr>
+      <td>OpenPorchSF</td>
+      <td>1460.0</td>
+      <td>46.660274</td>
+      <td>66.256028</td>
+      <td>0.0</td>
+      <td>0.00</td>
+      <td>25.0</td>
+      <td>68.00</td>
+      <td>547.0</td>
+    </tr>
+    <tr>
+      <td>EnclosedPorch</td>
+      <td>1460.0</td>
+      <td>21.954110</td>
+      <td>61.119149</td>
+      <td>0.0</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0.00</td>
+      <td>552.0</td>
+    </tr>
+    <tr>
+      <td>3SsnPorch</td>
+      <td>1460.0</td>
+      <td>3.409589</td>
+      <td>29.317331</td>
+      <td>0.0</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0.00</td>
+      <td>508.0</td>
+    </tr>
+    <tr>
+      <td>ScreenPorch</td>
+      <td>1460.0</td>
+      <td>15.060959</td>
+      <td>55.757415</td>
+      <td>0.0</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0.00</td>
+      <td>480.0</td>
+    </tr>
+    <tr>
+      <td>PoolArea</td>
+      <td>1460.0</td>
+      <td>2.758904</td>
+      <td>40.177307</td>
+      <td>0.0</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0.00</td>
+      <td>738.0</td>
+    </tr>
+    <tr>
+      <td>MiscVal</td>
+      <td>1460.0</td>
+      <td>43.489041</td>
+      <td>496.123024</td>
+      <td>0.0</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0.00</td>
+      <td>15500.0</td>
+    </tr>
+    <tr>
+      <td>MoSold</td>
+      <td>1460.0</td>
+      <td>6.321918</td>
+      <td>2.703626</td>
+      <td>1.0</td>
+      <td>5.00</td>
+      <td>6.0</td>
+      <td>8.00</td>
+      <td>12.0</td>
+    </tr>
+    <tr>
+      <td>YrSold</td>
+      <td>1460.0</td>
+      <td>2007.815753</td>
+      <td>1.328095</td>
+      <td>2006.0</td>
+      <td>2007.00</td>
+      <td>2008.0</td>
+      <td>2009.00</td>
+      <td>2010.0</td>
+    </tr>
+    <tr>
+      <td>SalePrice</td>
+      <td>1460.0</td>
+      <td>180921.195890</td>
+      <td>79442.502883</td>
+      <td>34900.0</td>
+      <td>129975.00</td>
+      <td>163000.0</td>
+      <td>214000.00</td>
+      <td>755000.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="checking-for-missing-values">Checking for Missing Values</h2>
+
+<h3 id="missing-train-values">Missing Train values</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">missing_percentage</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="s">"""This function takes a DataFrame(df) as input and returns two columns, total missing values and total missing values percentage"""</span>
+    <span class="c1">## the two following line may seem complicated but its actually very simple. 
+</span>    <span class="n">total</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">isnull</span><span class="p">().</span><span class="nb">sum</span><span class="p">().</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span> <span class="o">=</span> <span class="bp">False</span><span class="p">)[</span><span class="n">df</span><span class="p">.</span><span class="n">isnull</span><span class="p">().</span><span class="nb">sum</span><span class="p">().</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span> <span class="o">=</span> <span class="bp">False</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">percent</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="n">isnull</span><span class="p">().</span><span class="nb">sum</span><span class="p">().</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span> <span class="o">=</span> <span class="bp">False</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span><span class="mi">2</span><span class="p">)[</span><span class="nb">round</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="n">isnull</span><span class="p">().</span><span class="nb">sum</span><span class="p">().</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span> <span class="o">=</span> <span class="bp">False</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="p">.</span><span class="n">concat</span><span class="p">([</span><span class="n">total</span><span class="p">,</span> <span class="n">percent</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="p">[</span><span class="s">'Total'</span><span class="p">,</span><span class="s">'Percent'</span><span class="p">])</span>
+
+<span class="n">missing_percentage</span><span class="p">(</span><span class="n">train</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Total</th>
+      <th>Percent</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>PoolQC</td>
+      <td>1453</td>
+      <td>99.52</td>
+    </tr>
+    <tr>
+      <td>MiscFeature</td>
+      <td>1406</td>
+      <td>96.30</td>
+    </tr>
+    <tr>
+      <td>Alley</td>
+      <td>1369</td>
+      <td>93.77</td>
+    </tr>
+    <tr>
+      <td>Fence</td>
+      <td>1179</td>
+      <td>80.75</td>
+    </tr>
+    <tr>
+      <td>FireplaceQu</td>
+      <td>690</td>
+      <td>47.26</td>
+    </tr>
+    <tr>
+      <td>LotFrontage</td>
+      <td>259</td>
+      <td>17.74</td>
+    </tr>
+    <tr>
+      <td>GarageCond</td>
+      <td>81</td>
+      <td>5.55</td>
+    </tr>
+    <tr>
+      <td>GarageType</td>
+      <td>81</td>
+      <td>5.55</td>
+    </tr>
+    <tr>
+      <td>GarageYrBlt</td>
+      <td>81</td>
+      <td>5.55</td>
+    </tr>
+    <tr>
+      <td>GarageFinish</td>
+      <td>81</td>
+      <td>5.55</td>
+    </tr>
+    <tr>
+      <td>GarageQual</td>
+      <td>81</td>
+      <td>5.55</td>
+    </tr>
+    <tr>
+      <td>BsmtExposure</td>
+      <td>38</td>
+      <td>2.60</td>
+    </tr>
+    <tr>
+      <td>BsmtFinType2</td>
+      <td>38</td>
+      <td>2.60</td>
+    </tr>
+    <tr>
+      <td>BsmtFinType1</td>
+      <td>37</td>
+      <td>2.53</td>
+    </tr>
+    <tr>
+      <td>BsmtCond</td>
+      <td>37</td>
+      <td>2.53</td>
+    </tr>
+    <tr>
+      <td>BsmtQual</td>
+      <td>37</td>
+      <td>2.53</td>
+    </tr>
+    <tr>
+      <td>MasVnrArea</td>
+      <td>8</td>
+      <td>0.55</td>
+    </tr>
+    <tr>
+      <td>MasVnrType</td>
+      <td>8</td>
+      <td>0.55</td>
+    </tr>
+    <tr>
+      <td>Electrical</td>
+      <td>1</td>
+      <td>0.07</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<blockquote>
+  <h3 id="missing-test-values">Missing Test values</h3>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">missing_percentage</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Total</th>
+      <th>Percent</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>PoolQC</td>
+      <td>1456</td>
+      <td>99.79</td>
+    </tr>
+    <tr>
+      <td>MiscFeature</td>
+      <td>1408</td>
+      <td>96.50</td>
+    </tr>
+    <tr>
+      <td>Alley</td>
+      <td>1352</td>
+      <td>92.67</td>
+    </tr>
+    <tr>
+      <td>Fence</td>
+      <td>1169</td>
+      <td>80.12</td>
+    </tr>
+    <tr>
+      <td>FireplaceQu</td>
+      <td>730</td>
+      <td>50.03</td>
+    </tr>
+    <tr>
+      <td>LotFrontage</td>
+      <td>227</td>
+      <td>15.56</td>
+    </tr>
+    <tr>
+      <td>GarageCond</td>
+      <td>78</td>
+      <td>5.35</td>
+    </tr>
+    <tr>
+      <td>GarageQual</td>
+      <td>78</td>
+      <td>5.35</td>
+    </tr>
+    <tr>
+      <td>GarageYrBlt</td>
+      <td>78</td>
+      <td>5.35</td>
+    </tr>
+    <tr>
+      <td>GarageFinish</td>
+      <td>78</td>
+      <td>5.35</td>
+    </tr>
+    <tr>
+      <td>GarageType</td>
+      <td>76</td>
+      <td>5.21</td>
+    </tr>
+    <tr>
+      <td>BsmtCond</td>
+      <td>45</td>
+      <td>3.08</td>
+    </tr>
+    <tr>
+      <td>BsmtQual</td>
+      <td>44</td>
+      <td>3.02</td>
+    </tr>
+    <tr>
+      <td>BsmtExposure</td>
+      <td>44</td>
+      <td>3.02</td>
+    </tr>
+    <tr>
+      <td>BsmtFinType1</td>
+      <td>42</td>
+      <td>2.88</td>
+    </tr>
+    <tr>
+      <td>BsmtFinType2</td>
+      <td>42</td>
+      <td>2.88</td>
+    </tr>
+    <tr>
+      <td>MasVnrType</td>
+      <td>16</td>
+      <td>1.10</td>
+    </tr>
+    <tr>
+      <td>MasVnrArea</td>
+      <td>15</td>
+      <td>1.03</td>
+    </tr>
+    <tr>
+      <td>MSZoning</td>
+      <td>4</td>
+      <td>0.27</td>
+    </tr>
+    <tr>
+      <td>BsmtHalfBath</td>
+      <td>2</td>
+      <td>0.14</td>
+    </tr>
+    <tr>
+      <td>Utilities</td>
+      <td>2</td>
+      <td>0.14</td>
+    </tr>
+    <tr>
+      <td>Functional</td>
+      <td>2</td>
+      <td>0.14</td>
+    </tr>
+    <tr>
+      <td>BsmtFullBath</td>
+      <td>2</td>
+      <td>0.14</td>
+    </tr>
+    <tr>
+      <td>BsmtFinSF2</td>
+      <td>1</td>
+      <td>0.07</td>
+    </tr>
+    <tr>
+      <td>BsmtFinSF1</td>
+      <td>1</td>
+      <td>0.07</td>
+    </tr>
+    <tr>
+      <td>Exterior2nd</td>
+      <td>1</td>
+      <td>0.07</td>
+    </tr>
+    <tr>
+      <td>BsmtUnfSF</td>
+      <td>1</td>
+      <td>0.07</td>
+    </tr>
+    <tr>
+      <td>TotalBsmtSF</td>
+      <td>1</td>
+      <td>0.07</td>
+    </tr>
+    <tr>
+      <td>SaleType</td>
+      <td>1</td>
+      <td>0.07</td>
+    </tr>
+    <tr>
+      <td>Exterior1st</td>
+      <td>1</td>
+      <td>0.07</td>
+    </tr>
+    <tr>
+      <td>KitchenQual</td>
+      <td>1</td>
+      <td>0.07</td>
+    </tr>
+    <tr>
+      <td>GarageArea</td>
+      <td>1</td>
+      <td>0.07</td>
+    </tr>
+    <tr>
+      <td>GarageCars</td>
+      <td>1</td>
+      <td>0.07</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h1 id="observation">Observation</h1>
+<ul>
+  <li>There are multiple types of features.</li>
+  <li>Some features have missing values.</li>
+  <li>Most of the features are object( includes string values in the variable).</li>
+</ul>
+
+<h4 id="similarly-i-will-normalize-the-distrbution-of-the-saleprice-by-log-next">Similarly, I will normalize the distrbution of the SalePrice by log next.</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">plotting_3_chart</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">feature</span><span class="p">):</span>
+    <span class="c1">## Importing seaborn, matplotlab and scipy modules. 
+</span>    <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="n">sns</span>
+    <span class="kn">import</span> <span class="nn">matplotlib.gridspec</span> <span class="k">as</span> <span class="n">gridspec</span>
+    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+    <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
+    <span class="kn">import</span> <span class="nn">matplotlib.style</span> <span class="k">as</span> <span class="n">style</span>
+    <span class="n">style</span><span class="p">.</span><span class="n">use</span><span class="p">(</span><span class="s">'fivethirtyeight'</span><span class="p">)</span>
+
+    <span class="c1">## Creating a customized chart. and giving in figsize and everything. 
+</span>    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">constrained_layout</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+    <span class="c1">## creating a grid of 3 cols and 3 rows. 
+</span>    <span class="n">grid</span> <span class="o">=</span> <span class="n">gridspec</span><span class="p">.</span><span class="n">GridSpec</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">figure</span><span class="o">=</span><span class="n">fig</span><span class="p">)</span>
+    <span class="c1">#gs = fig3.add_gridspec(3, 3)
+</span>
+    <span class="c1">## Customizing the histogram grid. 
+</span>    <span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="p">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:</span><span class="mi">2</span><span class="p">])</span>
+    <span class="c1">## Set the title. 
+</span>    <span class="n">ax1</span><span class="p">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">'Histogram'</span><span class="p">)</span>
+    <span class="c1">## plot the histogram. 
+</span>    <span class="n">sns</span><span class="p">.</span><span class="n">distplot</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="n">loc</span><span class="p">[:,</span><span class="n">feature</span><span class="p">],</span> <span class="n">norm_hist</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax1</span><span class="p">)</span>
+
+    <span class="c1"># customizing the QQ_plot. 
+</span>    <span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="p">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:</span><span class="mi">2</span><span class="p">])</span>
+    <span class="c1">## Set the title. 
+</span>    <span class="n">ax2</span><span class="p">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">'QQ_plot'</span><span class="p">)</span>
+    <span class="c1">## Plotting the QQ_Plot. 
+</span>    <span class="n">stats</span><span class="p">.</span><span class="n">probplot</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="n">loc</span><span class="p">[:,</span><span class="n">feature</span><span class="p">],</span> <span class="n">plot</span> <span class="o">=</span> <span class="n">ax2</span><span class="p">)</span>
+
+    <span class="c1">## Customizing the Box Plot. 
+</span>    <span class="n">ax3</span> <span class="o">=</span> <span class="n">fig</span><span class="p">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">grid</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])</span>
+    <span class="c1">## Set title. 
+</span>    <span class="n">ax3</span><span class="p">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">'Box Plot'</span><span class="p">)</span>
+    <span class="c1">## Plotting the box plot. 
+</span>    <span class="n">sns</span><span class="p">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="n">loc</span><span class="p">[:,</span><span class="n">feature</span><span class="p">],</span> <span class="n">orient</span><span class="o">=</span><span class="s">'v'</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax3</span> <span class="p">);</span>
+    
+<span class="n">plotting_3_chart</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="s">'SalePrice'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="https://raw.githubusercontent.com/zcczhang/House_Price_Prediction_Model/master/output/1.png" alt="png" /></p>
+
+<p>These <strong>three</strong> charts above can tell us a lot about our target variable.</p>
+<ul>
+  <li>Our target variable, <strong>SalePrice</strong> is not normally distributed.</li>
+  <li>Our target variable is right-skewed.</li>
+  <li>There are multiple outliers in the variable.</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#skewness and kurtosis
+</span><span class="k">print</span><span class="p">(</span><span class="s">"Skewness: "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="s">'SalePrice'</span><span class="p">].</span><span class="n">skew</span><span class="p">()))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Kurtosis: "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="s">'SalePrice'</span><span class="p">].</span><span class="n">kurt</span><span class="p">()))</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Skewness: 1.8828757597682129
+Kurtosis: 6.536281860064529
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## trainsforming target variable using numpy.log1p, 
+</span><span class="n">train</span><span class="p">[</span><span class="s">"SalePrice"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">log1p</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="s">"SalePrice"</span><span class="p">])</span>
+
+<span class="c1">## Plotting the newly transformed response variable
+</span><span class="n">plotting_3_chart</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="s">'SalePrice'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="https://raw.githubusercontent.com/zcczhang/House_Price_Prediction_Model/master/output/2.png" alt="png" /></p>
+
+<p>As you can see the log transformation removes the normality of errors. This solves some of the other assumptions that we talked about above like Homoscedasticity. Let’s make a comparison of the pre-transformed and post-transformed state of residual plots.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## Customizing grid for two plots. 
+</span><span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sharey</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="c1">## doing the first scatter plot. 
+</span><span class="n">sns</span><span class="p">.</span><span class="n">residplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">previous_train</span><span class="p">.</span><span class="n">GrLivArea</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">previous_train</span><span class="p">.</span><span class="n">SalePrice</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax1</span><span class="p">)</span>
+<span class="c1">## doing the scatter plot for GrLivArea and SalePrice. 
+</span><span class="n">sns</span><span class="p">.</span><span class="n">residplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">train</span><span class="p">.</span><span class="n">GrLivArea</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">train</span><span class="p">.</span><span class="n">SalePrice</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax2</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><img src="https://raw.githubusercontent.com/zcczhang/House_Price_Prediction_Model/master/output/3.png" alt="png" /></p>
+
+<p>Here, we can see that the pre-transformed chart on the left has heteroscedasticity, and the post-transformed chart on the right has almost an equal amount of variance across the zero lines.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## Plot fig sizing. 
+</span><span class="n">style</span><span class="p">.</span><span class="n">use</span><span class="p">(</span><span class="s">'ggplot'</span><span class="p">)</span>
+<span class="n">sns</span><span class="p">.</span><span class="n">set_style</span><span class="p">(</span><span class="s">'whitegrid'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">30</span><span class="p">,</span><span class="mi">20</span><span class="p">))</span>
+<span class="c1">## Plotting heatmap. 
+</span>
+<span class="c1"># Generate a mask for the upper triangle (taken from seaborn example gallery)
+</span><span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">train</span><span class="p">.</span><span class="n">corr</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="nb">bool</span><span class="p">)</span>
+<span class="n">mask</span><span class="p">[</span><span class="n">np</span><span class="p">.</span><span class="n">triu_indices_from</span><span class="p">(</span><span class="n">mask</span><span class="p">)]</span> <span class="o">=</span> <span class="bp">True</span>
+
+
+<span class="n">sns</span><span class="p">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">train</span><span class="p">.</span><span class="n">corr</span><span class="p">(),</span> <span class="n">cmap</span><span class="o">=</span><span class="n">sns</span><span class="p">.</span><span class="n">diverging_palette</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">220</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">200</span><span class="p">),</span> <span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">center</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="p">);</span>
+<span class="c1">## Give title. 
+</span><span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Heatmap of all the Features"</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">30</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><img src="https://raw.githubusercontent.com/zcczhang/House_Price_Prediction_Model/master/output/4.png" alt="png" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## Dropping the "Id" from train and test set. 
+# train.drop(columns=['Id'],axis=1, inplace=True)
+</span>
+<span class="n">train</span><span class="p">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s">'Id'</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">test</span><span class="p">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s">'Id'</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="c1">## Saving the target values in "y_train". 
+</span><span class="n">y</span> <span class="o">=</span> <span class="n">train</span><span class="p">[</span><span class="s">'SalePrice'</span><span class="p">].</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+
+
+<span class="c1"># getting a copy of train
+</span><span class="n">previous_train</span> <span class="o">=</span> <span class="n">train</span><span class="p">.</span><span class="n">copy</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## Combining train and test datasets together so that we can do all the work at once. 
+</span><span class="n">all_data</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">concat</span><span class="p">((</span><span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="p">)).</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+<span class="c1">## Dropping the target variable. 
+</span><span class="n">all_data</span><span class="p">.</span><span class="n">drop</span><span class="p">([</span><span class="s">'SalePrice'</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="dealing-with-missing-values">Dealing with Missing Values</h2>
+<blockquote>
+  <p><strong>Missing data in train and test data(all_data)</strong></p>
+</blockquote>
+
+<blockquote>
+  <p><strong>Imputing Missing Values</strong></p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## Some missing values are intentionally left blank, for example: In the Alley feature 
+## there are blank values meaning that there are no alley's in that specific house. 
+</span><span class="n">missing_val_col</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Alley"</span><span class="p">,</span> 
+                   <span class="s">"PoolQC"</span><span class="p">,</span> 
+                   <span class="s">"MiscFeature"</span><span class="p">,</span>
+                   <span class="s">"Fence"</span><span class="p">,</span>
+                   <span class="s">"FireplaceQu"</span><span class="p">,</span>
+                   <span class="s">"GarageType"</span><span class="p">,</span>
+                   <span class="s">"GarageFinish"</span><span class="p">,</span>
+                   <span class="s">"GarageQual"</span><span class="p">,</span>
+                   <span class="s">"GarageCond"</span><span class="p">,</span>
+                   <span class="s">'BsmtQual'</span><span class="p">,</span>
+                   <span class="s">'BsmtCond'</span><span class="p">,</span>
+                   <span class="s">'BsmtExposure'</span><span class="p">,</span>
+                   <span class="s">'BsmtFinType1'</span><span class="p">,</span>
+                   <span class="s">'BsmtFinType2'</span><span class="p">,</span>
+                   <span class="s">'MasVnrType'</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">missing_val_col</span><span class="p">:</span>
+    <span class="n">all_data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">fillna</span><span class="p">(</span><span class="s">'None'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## These features are continous variable, we used "0" to replace the null values. 
+</span><span class="n">missing_val_col2</span> <span class="o">=</span> <span class="p">[</span><span class="s">'BsmtFinSF1'</span><span class="p">,</span>
+                    <span class="s">'BsmtFinSF2'</span><span class="p">,</span>
+                    <span class="s">'BsmtUnfSF'</span><span class="p">,</span>
+                    <span class="s">'TotalBsmtSF'</span><span class="p">,</span>
+                    <span class="s">'BsmtFullBath'</span><span class="p">,</span> 
+                    <span class="s">'BsmtHalfBath'</span><span class="p">,</span> 
+                    <span class="s">'GarageYrBlt'</span><span class="p">,</span>
+                    <span class="s">'GarageArea'</span><span class="p">,</span>
+                    <span class="s">'GarageCars'</span><span class="p">,</span>
+                    <span class="s">'MasVnrArea'</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">missing_val_col2</span><span class="p">:</span>
+    <span class="n">all_data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    
+<span class="c1">## Replaced all missing values in LotFrontage by imputing the median value of each neighborhood. 
+</span><span class="n">all_data</span><span class="p">[</span><span class="s">'LotFrontage'</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">.</span><span class="n">groupby</span><span class="p">(</span><span class="s">'Neighborhood'</span><span class="p">)[</span><span class="s">'LotFrontage'</span><span class="p">].</span><span class="n">transform</span><span class="p">(</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">mean</span><span class="p">()))</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## the "OverallCond" and "OverallQual" of the house. 
+# all_data['OverallCond'] = all_data['OverallCond'].astype(str) 
+# all_data['OverallQual'] = all_data['OverallQual'].astype(str)
+</span>
+<span class="c1">## Zoning class are given in numerical; therefore converted to categorical variables. 
+</span><span class="n">all_data</span><span class="p">[</span><span class="s">'MSSubClass'</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">[</span><span class="s">'MSSubClass'</span><span class="p">].</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+<span class="n">all_data</span><span class="p">[</span><span class="s">'MSZoning'</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">.</span><span class="n">groupby</span><span class="p">(</span><span class="s">'MSSubClass'</span><span class="p">)[</span><span class="s">'MSZoning'</span><span class="p">].</span><span class="n">transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">mode</span><span class="p">()[</span><span class="mi">0</span><span class="p">]))</span>
+
+<span class="c1">## Important years and months that should be categorical variables not numerical. 
+# all_data['YearBuilt'] = all_data['YearBuilt'].astype(str)
+# all_data['YearRemodAdd'] = all_data['YearRemodAdd'].astype(str)
+# all_data['GarageYrBlt'] = all_data['GarageYrBlt'].astype(str)
+</span><span class="n">all_data</span><span class="p">[</span><span class="s">'YrSold'</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">[</span><span class="s">'YrSold'</span><span class="p">].</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+<span class="n">all_data</span><span class="p">[</span><span class="s">'MoSold'</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">[</span><span class="s">'MoSold'</span><span class="p">].</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> 
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">all_data</span><span class="p">[</span><span class="s">'Functional'</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">[</span><span class="s">'Functional'</span><span class="p">].</span><span class="n">fillna</span><span class="p">(</span><span class="s">'Typ'</span><span class="p">)</span> 
+<span class="n">all_data</span><span class="p">[</span><span class="s">'Utilities'</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">[</span><span class="s">'Utilities'</span><span class="p">].</span><span class="n">fillna</span><span class="p">(</span><span class="s">'AllPub'</span><span class="p">)</span> 
+<span class="n">all_data</span><span class="p">[</span><span class="s">'Exterior1st'</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">[</span><span class="s">'Exterior1st'</span><span class="p">].</span><span class="n">fillna</span><span class="p">(</span><span class="n">all_data</span><span class="p">[</span><span class="s">'Exterior1st'</span><span class="p">].</span><span class="n">mode</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span> 
+<span class="n">all_data</span><span class="p">[</span><span class="s">'Exterior2nd'</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">[</span><span class="s">'Exterior2nd'</span><span class="p">].</span><span class="n">fillna</span><span class="p">(</span><span class="n">all_data</span><span class="p">[</span><span class="s">'Exterior2nd'</span><span class="p">].</span><span class="n">mode</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">all_data</span><span class="p">[</span><span class="s">'KitchenQual'</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">[</span><span class="s">'KitchenQual'</span><span class="p">].</span><span class="n">fillna</span><span class="p">(</span><span class="s">"TA"</span><span class="p">)</span> 
+<span class="n">all_data</span><span class="p">[</span><span class="s">'SaleType'</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">[</span><span class="s">'SaleType'</span><span class="p">].</span><span class="n">fillna</span><span class="p">(</span><span class="n">all_data</span><span class="p">[</span><span class="s">'SaleType'</span><span class="p">].</span><span class="n">mode</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">all_data</span><span class="p">[</span><span class="s">'Electrical'</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">[</span><span class="s">'Electrical'</span><span class="p">].</span><span class="n">fillna</span><span class="p">(</span><span class="s">"SBrkr"</span><span class="p">)</span> 
+
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">missing_percentage</span><span class="p">(</span><span class="n">all_data</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Total</th>
+      <th>Percent</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+</div>
+
+<p>So, there are no missing value left.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sns</span><span class="p">.</span><span class="n">distplot</span><span class="p">(</span><span class="n">all_data</span><span class="p">[</span><span class="s">'1stFlrSF'</span><span class="p">]);</span>
+</code></pre></div></div>
+
+<p><img src="https://raw.githubusercontent.com/zcczhang/House_Price_Prediction_Model/master/output/5.png" alt="png" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">numeric_feats</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">.</span><span class="n">dtypes</span><span class="p">[</span><span class="n">all_data</span><span class="p">.</span><span class="n">dtypes</span> <span class="o">!=</span> <span class="s">"object"</span><span class="p">].</span><span class="n">index</span>
+
+<span class="n">skewed_feats</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">[</span><span class="n">numeric_feats</span><span class="p">].</span><span class="nb">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">skew</span><span class="p">(</span><span class="n">x</span><span class="p">)).</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+<span class="n">skewed_feats</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>MiscVal          21.939672
+PoolArea         17.688664
+LotArea          13.109495
+LowQualFinSF     12.084539
+3SsnPorch        11.372080
+KitchenAbvGr      4.300550
+BsmtFinSF2        4.144503
+EnclosedPorch     4.002344
+ScreenPorch       3.945101
+BsmtHalfBath      3.929996
+MasVnrArea        2.621719
+OpenPorchSF       2.529358
+WoodDeckSF        1.844792
+1stFlrSF          1.257286
+GrLivArea         1.068750
+LotFrontage       1.058803
+BsmtFinSF1        0.980645
+BsmtUnfSF         0.919688
+2ndFlrSF          0.861556
+TotRmsAbvGrd      0.749232
+Fireplaces        0.725278
+HalfBath          0.696666
+TotalBsmtSF       0.671751
+BsmtFullBath      0.622415
+OverallCond       0.569314
+BedroomAbvGr      0.326568
+GarageArea        0.216857
+OverallQual       0.189591
+FullBath          0.165514
+GarageCars       -0.219297
+YearRemodAdd     -0.450134
+YearBuilt        -0.599194
+GarageYrBlt      -3.904632
+dtype: float64
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## Fixing Skewed features using boxcox transformation. 
+</span>
+
+<span class="k">def</span> <span class="nf">fixing_skewness</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="s">"""
+    This function takes in a dataframe and return fixed skewed dataframe
+    """</span>
+    <span class="c1">## Import necessary modules 
+</span>    <span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">skew</span>
+    <span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">boxcox1p</span>
+    <span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">boxcox_normmax</span>
+    
+    <span class="c1">## Getting all the data that are not of "object" type. 
+</span>    <span class="n">numeric_feats</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">dtypes</span><span class="p">[</span><span class="n">df</span><span class="p">.</span><span class="n">dtypes</span> <span class="o">!=</span> <span class="s">"object"</span><span class="p">].</span><span class="n">index</span>
+
+    <span class="c1"># Check the skew of all numerical features
+</span>    <span class="n">skewed_feats</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">numeric_feats</span><span class="p">].</span><span class="nb">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">skew</span><span class="p">(</span><span class="n">x</span><span class="p">)).</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">high_skew</span> <span class="o">=</span> <span class="n">skewed_feats</span><span class="p">[</span><span class="nb">abs</span><span class="p">(</span><span class="n">skewed_feats</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">]</span>
+    <span class="n">skewed_features</span> <span class="o">=</span> <span class="n">high_skew</span><span class="p">.</span><span class="n">index</span>
+
+    <span class="k">for</span> <span class="n">feat</span> <span class="ow">in</span> <span class="n">skewed_features</span><span class="p">:</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">feat</span><span class="p">]</span> <span class="o">=</span> <span class="n">boxcox1p</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">feat</span><span class="p">],</span> <span class="n">boxcox_normmax</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">feat</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+
+<span class="n">fixing_skewness</span><span class="p">(</span><span class="n">all_data</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sns</span><span class="p">.</span><span class="n">distplot</span><span class="p">(</span><span class="n">all_data</span><span class="p">[</span><span class="s">'1stFlrSF'</span><span class="p">]);</span>
+</code></pre></div></div>
+
+<p><img src="https://raw.githubusercontent.com/zcczhang/House_Price_Prediction_Model/master/output/6.png" alt="png" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">all_data</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">.</span><span class="n">drop</span><span class="p">([</span><span class="s">'Utilities'</span><span class="p">,</span> <span class="s">'Street'</span><span class="p">,</span> <span class="s">'PoolQC'</span><span class="p">,],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># feture engineering a new feature "TotalFS"
+</span><span class="n">all_data</span><span class="p">[</span><span class="s">'TotalSF'</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">[</span><span class="s">'TotalBsmtSF'</span><span class="p">]</span> <span class="o">+</span> <span class="n">all_data</span><span class="p">[</span><span class="s">'1stFlrSF'</span><span class="p">]</span> <span class="o">+</span> <span class="n">all_data</span><span class="p">[</span><span class="s">'2ndFlrSF'</span><span class="p">]</span>
+<span class="n">all_data</span><span class="p">[</span><span class="s">'YrBltAndRemod'</span><span class="p">]</span><span class="o">=</span><span class="n">all_data</span><span class="p">[</span><span class="s">'YearBuilt'</span><span class="p">]</span><span class="o">+</span><span class="n">all_data</span><span class="p">[</span><span class="s">'YearRemodAdd'</span><span class="p">]</span>
+
+<span class="n">all_data</span><span class="p">[</span><span class="s">'Total_sqr_footage'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">all_data</span><span class="p">[</span><span class="s">'BsmtFinSF1'</span><span class="p">]</span> <span class="o">+</span> <span class="n">all_data</span><span class="p">[</span><span class="s">'BsmtFinSF2'</span><span class="p">]</span> <span class="o">+</span>
+                                 <span class="n">all_data</span><span class="p">[</span><span class="s">'1stFlrSF'</span><span class="p">]</span> <span class="o">+</span> <span class="n">all_data</span><span class="p">[</span><span class="s">'2ndFlrSF'</span><span class="p">])</span>
+
+<span class="n">all_data</span><span class="p">[</span><span class="s">'Total_Bathrooms'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">all_data</span><span class="p">[</span><span class="s">'FullBath'</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">all_data</span><span class="p">[</span><span class="s">'HalfBath'</span><span class="p">])</span> <span class="o">+</span>
+                               <span class="n">all_data</span><span class="p">[</span><span class="s">'BsmtFullBath'</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">all_data</span><span class="p">[</span><span class="s">'BsmtHalfBath'</span><span class="p">]))</span>
+
+<span class="n">all_data</span><span class="p">[</span><span class="s">'Total_porch_sf'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">all_data</span><span class="p">[</span><span class="s">'OpenPorchSF'</span><span class="p">]</span> <span class="o">+</span> <span class="n">all_data</span><span class="p">[</span><span class="s">'3SsnPorch'</span><span class="p">]</span> <span class="o">+</span>
+                              <span class="n">all_data</span><span class="p">[</span><span class="s">'EnclosedPorch'</span><span class="p">]</span> <span class="o">+</span> <span class="n">all_data</span><span class="p">[</span><span class="s">'ScreenPorch'</span><span class="p">]</span> <span class="o">+</span>
+                              <span class="n">all_data</span><span class="p">[</span><span class="s">'WoodDeckSF'</span><span class="p">])</span>
+
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">all_data</span><span class="p">[</span><span class="s">'haspool'</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">[</span><span class="s">'PoolArea'</span><span class="p">].</span><span class="nb">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">all_data</span><span class="p">[</span><span class="s">'has2ndfloor'</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">[</span><span class="s">'2ndFlrSF'</span><span class="p">].</span><span class="nb">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">all_data</span><span class="p">[</span><span class="s">'hasgarage'</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">[</span><span class="s">'GarageArea'</span><span class="p">].</span><span class="nb">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">all_data</span><span class="p">[</span><span class="s">'hasbsmt'</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">[</span><span class="s">'TotalBsmtSF'</span><span class="p">].</span><span class="nb">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">all_data</span><span class="p">[</span><span class="s">'hasfireplace'</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">[</span><span class="s">'Fireplaces'</span><span class="p">].</span><span class="nb">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">all_data</span><span class="p">.</span><span class="n">shape</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(2917, 86)
+</code></pre></div></div>
+
+<h2 id="creating-dummy-variables">Creating Dummy Variables.</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## Creating dummy variable 
+</span><span class="n">final_features</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">all_data</span><span class="p">).</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">final_features</span><span class="p">.</span><span class="n">shape</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(2917, 333)
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">X</span> <span class="o">=</span> <span class="n">final_features</span><span class="p">.</span><span class="n">iloc</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="p">:]</span>
+
+<span class="n">X_sub</span> <span class="o">=</span> <span class="n">final_features</span><span class="p">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">):,</span> <span class="p">:]</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">outliers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">88</span><span class="p">,</span> <span class="mi">462</span><span class="p">,</span> <span class="mi">631</span><span class="p">,</span> <span class="mi">1322</span><span class="p">]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="p">.</span><span class="n">drop</span><span class="p">(</span><span class="n">X</span><span class="p">.</span><span class="n">index</span><span class="p">[</span><span class="n">outliers</span><span class="p">])</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">.</span><span class="n">drop</span><span class="p">(</span><span class="n">y</span><span class="p">.</span><span class="n">index</span><span class="p">[</span><span class="n">outliers</span><span class="p">])</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">overfit_reducer</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="s">"""
+    This function takes in a dataframe and returns a list of features that are overfitted.
+    """</span>
+    <span class="n">overfit</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">df</span><span class="p">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">counts</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">value_counts</span><span class="p">()</span>
+        <span class="n">zeros</span> <span class="o">=</span> <span class="n">counts</span><span class="p">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">zeros</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">&gt;</span> <span class="mf">99.94</span><span class="p">:</span>
+            <span class="n">overfit</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">overfit</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">overfit</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">overfit</span>
+
+
+<span class="n">overfitted_features</span> <span class="o">=</span> <span class="n">overfit_reducer</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="p">.</span><span class="n">drop</span><span class="p">(</span><span class="n">overfitted_features</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">X_sub</span> <span class="o">=</span> <span class="n">X_sub</span><span class="p">.</span><span class="n">drop</span><span class="p">(</span><span class="n">overfitted_features</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">X</span><span class="p">.</span><span class="n">shape</span><span class="p">,</span><span class="n">y</span><span class="p">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">X_sub</span><span class="p">.</span><span class="n">shape</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>((1453, 332), (1453,), (1459, 332))
+</code></pre></div></div>
+
+<h1 id="fitting-modelsimple-approach">Fitting model(simple approach)</h1>
+
+<h2 id="train_test-split">Train_test split</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## Train test s
+</span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="c1">## Train test split follows this distinguished code pattern and helps creating train and test set to build machine learning. 
+</span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span><span class="n">test_size</span> <span class="o">=</span> <span class="p">.</span><span class="mi">33</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">X_train</span><span class="p">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y_train</span><span class="p">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">X_test</span><span class="p">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y_test</span><span class="p">.</span><span class="n">shape</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>((973, 332), (973,), (480, 332), (480,))
+</code></pre></div></div>
+
+<h3 id="regularization-models">Regularization Models</h3>
+<p>What makes regression model more effective is its ability of <em>regularizing</em>. The term “regularizing” stands for models ability <strong>to structurally prevent overfitting by imposing a penalty on the coefficients.</strong></p>
+
+<p>There are three types of regularizations.</p>
+<ul>
+  <li><strong>Ridge</strong></li>
+  <li><strong>Lasso</strong></li>
+  <li><strong>Elastic Net</strong></li>
+</ul>
+
+<h3 id="ridge">Ridge:</h3>
+<p>Ridge regression adds penalty equivalent to the square of the magnitude of the coefficients. This penalty is added to the least square loss function above and looks like this…</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## Importing Ridge. 
+</span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">Ridge</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_absolute_error</span><span class="p">,</span> <span class="n">mean_squared_error</span>
+<span class="c1">## Assiging different sets of alpha values to explore which can be the best fit for the model. 
+</span><span class="n">alpha_ridge</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mf">1e-15</span><span class="p">,</span> <span class="mf">1e-10</span><span class="p">,</span> <span class="mf">1e-8</span><span class="p">,</span><span class="mf">1e-5</span><span class="p">,</span><span class="mf">1e-4</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">,</span><span class="mf">1e-2</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">1.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">]</span>
+<span class="n">temp_rss</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">temp_mse</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">alpha_ridge</span><span class="p">:</span>
+    <span class="c1">## Assigin each model. 
+</span>    <span class="n">ridge</span> <span class="o">=</span> <span class="n">Ridge</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span> <span class="n">i</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="c1">## fit the model. 
+</span>    <span class="n">ridge</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+    <span class="c1">## Predicting the target value based on "Test_x"
+</span>    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">ridge</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+    <span class="n">mse</span> <span class="o">=</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+    <span class="n">rss</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">((</span><span class="n">y_pred</span><span class="o">-</span><span class="n">y_test</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">temp_mse</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">mse</span>
+    <span class="n">temp_rss</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">rss</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">temp_mse</span><span class="p">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"%s: %s"</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0.01: 0.012058094362558029
+0.001: 0.012361806597259932
+0.5: 0.012398339976451882
+0.0001: 0.01245484128284161
+1e-05: 0.012608710731947215
+1e-15: 0.0126876442980313
+1e-08: 0.012689390127616456
+1e-10: 0.012689491191917741
+1: 0.013828461568989092
+1.5: 0.015292912807173023
+2: 0.016759826630923253
+3: 0.019679216533917247
+4: 0.02256515576039871
+5: 0.02540603527247574
+10: 0.03869750099582716
+20: 0.06016951688745736
+30: 0.07597213357728104
+40: 0.08783870545120151
+-1: 22.58422122267688
+-3: 37.77842304072701
+-2: 1127.9896486631667
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">temp_rss</span><span class="p">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"%s: %s"</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0.01: 5.787885294027853
+0.001: 5.9336671666847645
+0.5: 5.951203188696909
+0.0001: 5.978323815763974
+1e-05: 6.052181151334658
+1e-15: 6.090069263055022
+1e-08: 6.090907261255897
+1e-10: 6.09095577212052
+1: 6.637661553114765
+1.5: 7.34059814744305
+2: 8.044716782843166
+3: 9.446023936280277
+4: 10.831274764991383
+5: 12.194896930788355
+10: 18.574800477997016
+20: 28.881368105979536
+30: 36.46662411709491
+40: 42.16257861657673
+-1: 10840.426186884908
+-3: 18133.64305954895
+-2: 541435.0313583203
+</code></pre></div></div>
+
+<h3 id="lasso">Lasso:</h3>
+<p>Lasso adds penalty equivalent to the absolute value of the sum of coefficients. This penalty is added to the least square loss function and replaces the squared sum of coefficients from Ridge.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">Lasso</span> 
+<span class="n">temp_rss</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">temp_mse</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">alpha_ridge</span><span class="p">:</span>
+    <span class="c1">## Assigin each model. 
+</span>    <span class="n">lasso_reg</span> <span class="o">=</span> <span class="n">Lasso</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span> <span class="n">i</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="c1">## fit the model. 
+</span>    <span class="n">lasso_reg</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+    <span class="c1">## Predicting the target value based on "Test_x"
+</span>    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">lasso_reg</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+    <span class="n">mse</span> <span class="o">=</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+    <span class="n">rss</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">((</span><span class="n">y_pred</span><span class="o">-</span><span class="n">y_test</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">temp_mse</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">mse</span>
+    <span class="n">temp_rss</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">rss</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">temp_mse</span><span class="p">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"%s: %s"</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0.0001: 0.010061658258835855
+1e-05: 0.011553103092552693
+1e-08: 0.012464777509974378
+1e-10: 0.012469892082710245
+1e-15: 0.01246993993780167
+0.001: 0.01834391027644981
+0.01: 0.15998234085337285
+0.5: 0.16529633945001213
+1: 0.16529633945001213
+1.5: 0.16529633945001213
+2: 0.16529633945001213
+3: 0.16529633945001213
+4: 0.16529633945001213
+5: 0.16529633945001213
+10: 0.16529633945001213
+20: 0.16529633945001213
+30: 0.16529633945001213
+40: 0.16529633945001213
+-1: 14648689598.250006
+-2: 58594759730.8125
+-3: 131838210397.70003
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">temp_rss</span><span class="p">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"%s: %s"</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0.0001: 4.82959596424121
+1e-05: 5.545489484425293
+1e-08: 5.9830932047877035
+1e-10: 5.985548199700918
+1e-15: 5.9855711701448
+0.001: 8.805076932695897
+0.01: 76.79152360961895
+0.5: 79.34224293600582
+1: 79.34224293600582
+1.5: 79.34224293600582
+2: 79.34224293600582
+3: 79.34224293600582
+4: 79.34224293600582
+5: 79.34224293600582
+10: 79.34224293600582
+20: 79.34224293600582
+30: 79.34224293600582
+40: 79.34224293600582
+-1: 7031371007160.002
+-2: 28125484670789.992
+-3: 63282340990896.01
+</code></pre></div></div>
+
+<h3 id="elastic-net">Elastic Net:</h3>
+<p>Elastic Net is the combination of both Ridge and Lasso. It adds both the sum of squared coefficients and the absolute sum of the coefficients with the ordinary least square function. Let’s look at the function.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">ElasticNet</span>
+<span class="n">temp_rss</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">temp_mse</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">alpha_ridge</span><span class="p">:</span>
+    <span class="c1">## Assigin each model. 
+</span>    <span class="n">lasso_reg</span> <span class="o">=</span> <span class="n">ElasticNet</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span> <span class="n">i</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="c1">## fit the model. 
+</span>    <span class="n">lasso_reg</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+    <span class="c1">## Predicting the target value based on "Test_x"
+</span>    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">lasso_reg</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+    <span class="n">mse</span> <span class="o">=</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+    <span class="n">rss</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">((</span><span class="n">y_pred</span><span class="o">-</span><span class="n">y_test</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">temp_mse</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">mse</span>
+    <span class="n">temp_rss</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">rss</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">temp_mse</span><span class="p">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"%s: %s"</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0.0001: 0.010410247442255985
+1e-05: 0.011786774263401294
+1e-08: 0.012466548787037617
+1e-10: 0.012469905615434403
+1e-15: 0.012469939937937151
+0.001: 0.014971538718578314
+0.01: 0.10870291488354142
+0.5: 0.16529633945001213
+1: 0.16529633945001213
+1.5: 0.16529633945001213
+2: 0.16529633945001213
+3: 0.16529633945001213
+4: 0.16529633945001213
+5: 0.16529633945001213
+10: 0.16529633945001213
+20: 0.16529633945001213
+30: 0.16529633945001213
+40: 0.16529633945001213
+-3: 5.388825733568653
+-2: 5.470945111059094
+-1: 5.729175782943725
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">temp_rss</span><span class="p">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"%s: %s"</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0.0001: 4.996918772282872
+1e-05: 5.65765164643262
+1e-08: 5.983943417778055
+1e-10: 5.985554695408507
+1e-15: 5.9855711702098295
+0.001: 7.186338584917596
+0.01: 52.17739914409985
+0.5: 79.34224293600582
+1: 79.34224293600582
+1.5: 79.34224293600582
+2: 79.34224293600582
+3: 79.34224293600582
+4: 79.34224293600582
+5: 79.34224293600582
+10: 79.34224293600582
+20: 79.34224293600582
+30: 79.34224293600582
+40: 79.34224293600582
+-3: 2586.6363521129515
+-2: 2626.053653308364
+-1: 2750.0043758129887
+</code></pre></div></div>
+
+<h1 id="fitting-model-advanced-approach">Fitting model (Advanced approach)</h1>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">kfolds</span> <span class="o">=</span> <span class="n">KFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">rmsle</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">cv_rmse</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">):</span>
+    <span class="n">rmse</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">sqrt</span><span class="p">(</span><span class="o">-</span><span class="n">cross_val_score</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s">"neg_mean_squared_error"</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">kfolds</span><span class="p">))</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">rmse</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">alphas_alt</span> <span class="o">=</span> <span class="p">[</span><span class="mf">14.5</span><span class="p">,</span> <span class="mf">14.6</span><span class="p">,</span> <span class="mf">14.7</span><span class="p">,</span> <span class="mf">14.8</span><span class="p">,</span> <span class="mf">14.9</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mf">15.1</span><span class="p">,</span> <span class="mf">15.2</span><span class="p">,</span> <span class="mf">15.3</span><span class="p">,</span> <span class="mf">15.4</span><span class="p">,</span> <span class="mf">15.5</span><span class="p">]</span>
+<span class="n">alphas2</span> <span class="o">=</span> <span class="p">[</span><span class="mf">5e-05</span><span class="p">,</span> <span class="mf">0.0001</span><span class="p">,</span> <span class="mf">0.0002</span><span class="p">,</span> <span class="mf">0.0003</span><span class="p">,</span> <span class="mf">0.0004</span><span class="p">,</span> <span class="mf">0.0005</span><span class="p">,</span> <span class="mf">0.0006</span><span class="p">,</span> <span class="mf">0.0007</span><span class="p">,</span> <span class="mf">0.0008</span><span class="p">]</span>
+<span class="n">e_alphas</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0001</span><span class="p">,</span> <span class="mf">0.0002</span><span class="p">,</span> <span class="mf">0.0003</span><span class="p">,</span> <span class="mf">0.0004</span><span class="p">,</span> <span class="mf">0.0005</span><span class="p">,</span> <span class="mf">0.0006</span><span class="p">,</span> <span class="mf">0.0007</span><span class="p">]</span>
+<span class="n">e_l1ratio</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ridge</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="n">RobustScaler</span><span class="p">(),</span> <span class="n">RidgeCV</span><span class="p">(</span><span class="n">alphas</span><span class="o">=</span><span class="n">alphas_alt</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">kfolds</span><span class="p">))</span>
+<span class="n">lasso</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="n">RobustScaler</span><span class="p">(),</span> <span class="n">LassoCV</span><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="mf">1e7</span><span class="p">,</span> <span class="n">alphas</span><span class="o">=</span><span class="n">alphas2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">kfolds</span><span class="p">))</span>
+<span class="n">elasticnet</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="n">RobustScaler</span><span class="p">(),</span> <span class="n">ElasticNetCV</span><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="mf">1e7</span><span class="p">,</span> <span class="n">alphas</span><span class="o">=</span><span class="n">e_alphas</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">kfolds</span><span class="p">,</span> <span class="n">l1_ratio</span><span class="o">=</span><span class="n">e_l1ratio</span><span class="p">))</span>                                
+<span class="n">svr</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="n">RobustScaler</span><span class="p">(),</span> <span class="n">SVR</span><span class="p">(</span><span class="n">C</span><span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span> <span class="mf">0.008</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.0003</span><span class="p">,))</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">gbr</span> <span class="o">=</span> <span class="n">GradientBoostingRegressor</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">max_features</span><span class="o">=</span><span class="s">'sqrt'</span><span class="p">,</span> <span class="n">min_samples_leaf</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">min_samples_split</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s">'huber'</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span><span class="mi">42</span><span class="p">)</span>                             
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">lightgbm</span> <span class="o">=</span> <span class="n">LGBMRegressor</span><span class="p">(</span><span class="n">objective</span><span class="o">=</span><span class="s">'regression'</span><span class="p">,</span> 
+                                       <span class="n">num_leaves</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                                       <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> 
+                                       <span class="n">n_estimators</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>
+                                       <span class="n">max_bin</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> 
+                                       <span class="n">bagging_fraction</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span>
+                                       <span class="n">bagging_freq</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> 
+                                       <span class="n">bagging_seed</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+                                       <span class="n">feature_fraction</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+                                       <span class="n">feature_fraction_seed</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+                                       <span class="n">verbose</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+                                       <span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">xgboost</span> <span class="o">=</span> <span class="n">XGBRegressor</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">3460</span><span class="p">,</span>
+                                     <span class="n">max_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">min_child_weight</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                     <span class="n">gamma</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">subsample</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+                                     <span class="n">colsample_bytree</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+                                     <span class="n">objective</span><span class="o">=</span><span class="s">'reg:linear'</span><span class="p">,</span> <span class="n">nthread</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+                                     <span class="n">scale_pos_weight</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">27</span><span class="p">,</span>
+                                     <span class="n">reg_alpha</span><span class="o">=</span><span class="mf">0.00006</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">stack_gen</span> <span class="o">=</span> <span class="n">StackingCVRegressor</span><span class="p">(</span><span class="n">regressors</span><span class="o">=</span><span class="p">(</span><span class="n">ridge</span><span class="p">,</span> <span class="n">lasso</span><span class="p">,</span> <span class="n">elasticnet</span><span class="p">,</span> <span class="n">xgboost</span><span class="p">,</span> <span class="n">lightgbm</span><span class="p">),</span>
+                                <span class="n">meta_regressor</span><span class="o">=</span><span class="n">xgboost</span><span class="p">,</span>
+                                <span class="n">use_features_in_secondary</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># score = cv_rmse(stack_gen)
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">score</span> <span class="o">=</span> <span class="n">cv_rmse</span><span class="p">(</span><span class="n">ridge</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Ridge: {:.4f} ({:.4f})</span><span class="se">\n</span><span class="s">"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">score</span><span class="p">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">score</span><span class="p">.</span><span class="n">std</span><span class="p">()),</span> <span class="n">datetime</span><span class="p">.</span><span class="n">now</span><span class="p">(),</span> <span class="p">)</span>
+
+<span class="n">score</span> <span class="o">=</span> <span class="n">cv_rmse</span><span class="p">(</span><span class="n">lasso</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"LASSO: {:.4f} ({:.4f})</span><span class="se">\n</span><span class="s">"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">score</span><span class="p">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">score</span><span class="p">.</span><span class="n">std</span><span class="p">()),</span> <span class="n">datetime</span><span class="p">.</span><span class="n">now</span><span class="p">(),</span> <span class="p">)</span>
+
+<span class="n">score</span> <span class="o">=</span> <span class="n">cv_rmse</span><span class="p">(</span><span class="n">elasticnet</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"elastic net: {:.4f} ({:.4f})</span><span class="se">\n</span><span class="s">"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">score</span><span class="p">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">score</span><span class="p">.</span><span class="n">std</span><span class="p">()),</span> <span class="n">datetime</span><span class="p">.</span><span class="n">now</span><span class="p">(),</span> <span class="p">)</span>
+
+<span class="n">score</span> <span class="o">=</span> <span class="n">cv_rmse</span><span class="p">(</span><span class="n">svr</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"SVR: {:.4f} ({:.4f})</span><span class="se">\n</span><span class="s">"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">score</span><span class="p">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">score</span><span class="p">.</span><span class="n">std</span><span class="p">()),</span> <span class="n">datetime</span><span class="p">.</span><span class="n">now</span><span class="p">(),</span> <span class="p">)</span>
+
+<span class="n">score</span> <span class="o">=</span> <span class="n">cv_rmse</span><span class="p">(</span><span class="n">lightgbm</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"lightgbm: {:.4f} ({:.4f})</span><span class="se">\n</span><span class="s">"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">score</span><span class="p">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">score</span><span class="p">.</span><span class="n">std</span><span class="p">()),</span> <span class="n">datetime</span><span class="p">.</span><span class="n">now</span><span class="p">(),</span> <span class="p">)</span>
+
+<span class="c1"># score = cv_rmse(gbr)
+# print("gbr: {:.4f} ({:.4f})\n".format(score.mean(), score.std()), datetime.now(), )
+</span>
+<span class="n">score</span> <span class="o">=</span> <span class="n">cv_rmse</span><span class="p">(</span><span class="n">xgboost</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"xgboost: {:.4f} ({:.4f})</span><span class="se">\n</span><span class="s">"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">score</span><span class="p">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">score</span><span class="p">.</span><span class="n">std</span><span class="p">()),</span> <span class="n">datetime</span><span class="p">.</span><span class="n">now</span><span class="p">(),</span> <span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Ridge: 0.1011 (0.0141)
+ 2020-01-22 15:12:38.941969
+LASSO: 0.0997 (0.0142)
+ 2020-01-22 15:12:45.519931
+elastic net: 0.0998 (0.0143)
+ 2020-01-22 15:13:12.882048
+SVR: 0.1020 (0.0146)
+ 2020-01-22 15:13:26.262319
+lightgbm: 0.1054 (0.0154)
+ 2020-01-22 15:13:44.348901
+[15:13:44] WARNING: /workspace/src/objective/regression_obj.cu:152: reg:linear is now deprecated in favor of reg:squarederror.
+[15:13:58] WARNING: /workspace/src/objective/regression_obj.cu:152: reg:linear is now deprecated in favor of reg:squarederror.
+[15:14:12] WARNING: /workspace/src/objective/regression_obj.cu:152: reg:linear is now deprecated in favor of reg:squarederror.
+[15:14:28] WARNING: /workspace/src/objective/regression_obj.cu:152: reg:linear is now deprecated in favor of reg:squarederror.
+[15:14:42] WARNING: /workspace/src/objective/regression_obj.cu:152: reg:linear is now deprecated in favor of reg:squarederror.
+[15:14:55] WARNING: /workspace/src/objective/regression_obj.cu:152: reg:linear is now deprecated in favor of reg:squarederror.
+[15:15:09] WARNING: /workspace/src/objective/regression_obj.cu:152: reg:linear is now deprecated in favor of reg:squarederror.
+[15:15:25] WARNING: /workspace/src/objective/regression_obj.cu:152: reg:linear is now deprecated in favor of reg:squarederror.
+[15:15:39] WARNING: /workspace/src/objective/regression_obj.cu:152: reg:linear is now deprecated in favor of reg:squarederror.
+[15:15:53] WARNING: /workspace/src/objective/regression_obj.cu:152: reg:linear is now deprecated in favor of reg:squarederror.
+xgboost: 0.1061 (0.0147)
+ 2020-01-22 15:16:07.581332
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">'START Fit'</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">'stack_gen'</span><span class="p">)</span>
+<span class="n">stack_gen_model</span> <span class="o">=</span> <span class="n">stack_gen</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">'elasticnet'</span><span class="p">)</span>
+<span class="n">elastic_model_full_data</span> <span class="o">=</span> <span class="n">elasticnet</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">'Lasso'</span><span class="p">)</span>
+<span class="n">lasso_model_full_data</span> <span class="o">=</span> <span class="n">lasso</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">'Ridge'</span><span class="p">)</span> 
+<span class="n">ridge_model_full_data</span> <span class="o">=</span> <span class="n">ridge</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">'Svr'</span><span class="p">)</span>
+<span class="n">svr_model_full_data</span> <span class="o">=</span> <span class="n">svr</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># print('GradientBoosting')
+# gbr_model_full_data = gbr.fit(X, y)
+</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'xgboost'</span><span class="p">)</span>
+<span class="n">xgb_model_full_data</span> <span class="o">=</span> <span class="n">xgboost</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">'lightgbm'</span><span class="p">)</span>
+<span class="n">lgb_model_full_data</span> <span class="o">=</span> <span class="n">lightgbm</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>START Fit
+stack_gen
+[15:17:42] WARNING: /workspace/src/objective/regression_obj.cu:152: reg:linear is now deprecated in favor of reg:squarederror.
+[15:17:54] WARNING: /workspace/src/objective/regression_obj.cu:152: reg:linear is now deprecated in favor of reg:squarederror.
+[15:18:07] WARNING: /workspace/src/objective/regression_obj.cu:152: reg:linear is now deprecated in favor of reg:squarederror.
+[15:18:21] WARNING: /workspace/src/objective/regression_obj.cu:152: reg:linear is now deprecated in favor of reg:squarederror.
+[15:18:34] WARNING: /workspace/src/objective/regression_obj.cu:152: reg:linear is now deprecated in favor of reg:squarederror.
+[15:18:54] WARNING: /workspace/src/objective/regression_obj.cu:152: reg:linear is now deprecated in favor of reg:squarederror.
+[15:19:15] WARNING: /workspace/src/objective/regression_obj.cu:152: reg:linear is now deprecated in favor of reg:squarederror.
+elasticnet
+Lasso
+Ridge
+Svr
+xgboost
+[15:19:40] WARNING: /workspace/src/objective/regression_obj.cu:152: reg:linear is now deprecated in favor of reg:squarederror.
+lightgbm
+</code></pre></div></div>
+
+<h1 id="blending-models">Blending Models</h1>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mf">1.0</span> <span class="o">*</span> <span class="n">elastic_model_full_data</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>array([12.2252765 , 12.19482971, 12.28743582, ..., 12.45057568,
+       11.846052  , 11.9162269 ])
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">blend_models_predict</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">((</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">elastic_model_full_data</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">))</span> <span class="o">+</span> \
+            <span class="p">(</span><span class="mf">0.05</span> <span class="o">*</span> <span class="n">lasso_model_full_data</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">))</span> <span class="o">+</span> \
+            <span class="p">(</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">ridge_model_full_data</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">))</span> <span class="o">+</span> \
+            <span class="p">(</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">svr_model_full_data</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">))</span> <span class="o">+</span> \
+<span class="c1">#             (0.1 * gbr_model_full_data.predict(X)) + \
+</span>            <span class="p">(</span><span class="mf">0.15</span> <span class="o">*</span> <span class="n">xgb_model_full_data</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">))</span> <span class="o">+</span> \
+            <span class="p">(</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">lgb_model_full_data</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">))</span> <span class="o">+</span> \
+            <span class="p">(</span><span class="mf">0.3</span> <span class="o">*</span> <span class="n">stack_gen_model</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">X</span><span class="p">))))</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">'RMSLE score on train data:'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">rmsle</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">blend_models_predict</span><span class="p">(</span><span class="n">X</span><span class="p">)))</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RMSLE score on train data:
+0.06279142797823006
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">submission</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">"../input/house-prices-advanced-regression-techniques/sample_submission.csv"</span><span class="p">)</span>
+<span class="n">submission</span><span class="p">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">floor</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">expm1</span><span class="p">(</span><span class="n">blend_models_predict</span><span class="p">(</span><span class="n">X_sub</span><span class="p">)))</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Predict submission
+</code></pre></div></div>
+
+<h1 id="submission">Submission</h1>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">q1</span> <span class="o">=</span> <span class="n">submission</span><span class="p">[</span><span class="s">'SalePrice'</span><span class="p">].</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.005</span><span class="p">)</span>
+<span class="n">q2</span> <span class="o">=</span> <span class="n">submission</span><span class="p">[</span><span class="s">'SalePrice'</span><span class="p">].</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.995</span><span class="p">)</span>
+<span class="n">submission</span><span class="p">[</span><span class="s">'SalePrice'</span><span class="p">]</span> <span class="o">=</span> <span class="n">submission</span><span class="p">[</span><span class="s">'SalePrice'</span><span class="p">].</span><span class="nb">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">q1</span> <span class="k">else</span> <span class="n">x</span><span class="o">*</span><span class="mf">0.77</span><span class="p">)</span>
+<span class="n">submission</span><span class="p">[</span><span class="s">'SalePrice'</span><span class="p">]</span> <span class="o">=</span> <span class="n">submission</span><span class="p">[</span><span class="s">'SalePrice'</span><span class="p">].</span><span class="nb">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">q2</span> <span class="k">else</span> <span class="n">x</span><span class="o">*</span><span class="mf">1.1</span><span class="p">)</span>
+<span class="n">submission</span><span class="p">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s">"submission.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</code></pre></div></div>
+<h3 id="reference">Reference</h3>
+<p>Notebooks in kaggle:</p>
+
+<p><a href="https://www.kaggle.com/cheesu/house-prices-1st-approach-to-data-science-process">House Prices: 1st Approach to Data Science Process</a></p>
+
+<p><a href="https://www.kaggle.com/itslek/stack-blend-lrs-xgb-lgb-house-prices-k-v17">Stack&amp;Blend LRs XGB LGB {House Prices K} v17</a></p>
+
+<p><a href="https://www.kaggle.com/datafan07/top-1-approach-eda-new-models-and-stacking">EDA, New Models and Stacking</a></p>
+
+<p><br /><br /><br /><br /><br /></p>
+
+<script src="https://utteranc.es/client.js" repo="zcczhang/zcczhang.github.io" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
+</script>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+
+
+      </footer>
+
+      
+
+<section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=http://localhost:4000/projects/house_pice_prediction" class="btn btn--twitter" title="Share on Twitter"><i class="fab fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/projects/house_pice_prediction" class="btn btn--facebook" title="Share on Facebook"><i class="fab fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:4000/projects/house_pice_prediction" class="btn btn--linkedin" title="Share on LinkedIn"><i class="fab fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+      
+
+
+  <nav class="pagination">
+    
+      <a href="http://localhost:4000/projects/himcm" class="pagination--pager" title="Mathematical Modeling for Drone Light Show
+">Previous</a>
+    
+    
+      <a href="http://localhost:4000/projects/uav" class="pagination--pager" title="Area Coverage with Unmanned Aerial Vehicles Using Reinforcement Learning
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+<a href="/sitemap/">Sitemap</a>
+<!-- end custom footer snippets -->
+
+        
+
+<div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+    
+    
+    
+      <li><a href="http://github.com/zcczhang"><i class="fab fa-github" aria-hidden="true"></i> GitHub</a></li>
+    
+    
+      </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2023 Charles Zhang. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://github.com/academicpages/academicpages.github.io">AcademicPages</a>.</div>
+
+      </footer>
+    </div>
+
+    <script src="http://localhost:4000/assets/js/main.min.js"></script>
+
+
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', '', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+  </body>
+</html>
+
